@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  AspectRatio,
-  Box,
   Center,
   Image,
   Stack,
@@ -11,15 +9,13 @@ import {
   DescriptionText,
   Heading,
   Section,
-  ServicesText,
-  ServicesContainer,
   AspectRadioView,
   CardContainer,
 } from "./styles";
 import { getEllipsisText } from "../../functions/getEllipsisText";
-import { getEllipsisArrayText } from "../../functions/getEllipsisArrayText";
 import { View } from "react-native";
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
+import { Services } from "../Services";
 
 export const ProfessionalItemCard = ({
   description,
@@ -64,9 +60,7 @@ export const ProfessionalItemCard = ({
             </Section>
 
             <Section heightPercentage="5%">
-              <ServicesContainer>
-                <ServicesText>{getEllipsisArrayText(services, 4)}</ServicesText>
-              </ServicesContainer>
+              <Services services={services} limit={4} />
             </Section>
           </Stack>
           <Section>

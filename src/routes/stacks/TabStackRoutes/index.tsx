@@ -4,6 +4,7 @@ import { AppState } from 'react-native';
 import { MyTabBar } from '../../tab-bar';
 import { HomeScreen } from '../../../pages/Home';
 import SearchScreen from '../../../pages/Search';
+import ProfileScreen from '../../../pages/Profile';
 
 const Tab = createBottomTabNavigator()
 
@@ -30,6 +31,13 @@ export function TabStackRoutes(){
             }}
             name='Search'
             component={SearchScreen}
+            />
+            <Tab.Screen 
+            options={{
+                headerShown: false
+            }}
+            name='Profile'
+            component={ProfileScreen}
             />
 
         </Tab.Navigator>

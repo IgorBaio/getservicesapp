@@ -1,23 +1,12 @@
 import React from "react";
-import { View, useWindowDimensions } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  NativeBaseProvider,
-  Box,
   Text,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Link,
-  Button,
 
   HStack,
   Center,
   Pressable,
 } from "native-base";
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
-import { useDispatch } from "react-redux";
 import { useScreen } from "../stores/screen";
 import { useAppDispatch } from "../app/hook";
 
@@ -27,27 +16,12 @@ interface MyTabBarProps {
   navigation: any;
 }
 
-// export function MyTabBar({descriptors, navigation, state}: MyTabBarProps){
-//     const {fontScale} = useWindowDimensions();
-//     const insets = useSafeAreaInsets();
-
-//     return (
-//         <View>
-//             <Text>TabBar</Text>
-//         </View>
-//     )
-// }
-
-export function MyTabBar({navigation, state, descriptors}: MyTabBarProps) {
-  const [selected, setSelected] = React.useState(1);
-  const dispatch = useAppDispatch();
+export function MyTabBar({ navigation, state, descriptors }: MyTabBarProps) {
   const { screen, setScreen } = useScreen((state) => state);
 
   const selectScreen = (page: number) => {
     setScreen(page)
   }
-
-
 
   return (
     <>
@@ -56,8 +30,10 @@ export function MyTabBar({navigation, state, descriptors}: MyTabBarProps) {
           opacity={screen == 0 ? 1 : 0.5}
           py="3"
           flex={1}
-          onPress={() => {selectScreen(0);
-            navigation.navigate('HomeScreen')}}
+          onPress={() => {
+            selectScreen(0);
+            navigation.navigate('HomeScreen')
+          }}
         >
           <Center>
             <MaterialIcons name='home' size={24} color='black' />
@@ -70,8 +46,10 @@ export function MyTabBar({navigation, state, descriptors}: MyTabBarProps) {
           opacity={screen == 1 ? 1 : 0.5}
           py="2"
           flex={1}
-          onPress={() => {selectScreen(1);
-            navigation.navigate('Search')}}
+          onPress={() => {
+            selectScreen(1);
+            navigation.navigate('Search')
+          }}
         >
           <Center>
             <MaterialIcons name='search' size={24} color='black' />
@@ -81,10 +59,13 @@ export function MyTabBar({navigation, state, descriptors}: MyTabBarProps) {
           </Center>
         </Pressable>
         <Pressable
-          opacity={screen == 3 ? 1 : 0.5}
+          opacity={screen == 2 ? 1 : 0.5}
           py="2"
           flex={1}
-          onPress={() => selectScreen(3)}
+          onPress={() => {
+            selectScreen(2);
+            navigation.navigate('Profile')
+          }}
         >
           <Center>
             <AntDesign name="user" size={24} color="black" />
@@ -94,8 +75,6 @@ export function MyTabBar({navigation, state, descriptors}: MyTabBarProps) {
           </Center>
         </Pressable>
       </HStack>
-      {/* </Box> */}
-      {/* </NativeBaseProvider> */}
     </>
   );
 }
