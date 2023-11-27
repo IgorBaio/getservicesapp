@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import { colors, scaledSize } from '../../Styles/theme'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
+import { CountriesListProps } from './types'
 
 export const ContentContainer = styled.ScrollView`
 
@@ -40,8 +41,9 @@ export const SectionSeparator = styled.View`
 
 export const DataContainer = styled.View`
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
+    height: ${heightPercentageToDP('100%')}px;
 `
 
 export const NameEditContainer = styled.View`
@@ -97,6 +99,7 @@ export const ServicesBadgesContainer = styled.View`
     align-items: center;
     flex-wrap: wrap;
     margin-top: ${heightPercentageToDP('2%')}px;
+    background-color: red;
 `
 
 export const ServiceBadge = styled.Text`
@@ -126,3 +129,158 @@ export const DescripitionText = styled.Text`
     color: ${colors.blackPrimary};
     text-align: center;
 `
+
+
+export const InputName = styled.TextInput`
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: ${colors.graySecondary};
+    padding: 10px;
+    margin-top: 10px;
+`;
+
+export const InputCellphone = styled.TextInput`
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: ${colors.graySecondary};
+    padding: 10px;
+    margin-top: 10px;
+`;
+
+export const InputCountry = styled.TextInput`
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: ${colors.graySecondary};
+    padding: 10px;
+    margin: 10px 0;
+`;
+
+export const CountryContainer = styled.View`
+    flex-direction: column;
+    align-items: center; 
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    margin-top: 10px;
+    position: relative;
+`;
+
+export const CountriesList = styled.FlatList<CountriesListProps>`
+    width: 80%;
+    height: ${({height} : CountriesListProps)=>heightPercentageToDP(!!height ? `${height*10}%` : '30%')}px;
+    border-radius: 10px;
+    background-color: ${colors.graySecondary};
+    padding: ${heightPercentageToDP('2%')}px ${widthPercentageToDP('2%')}px;
+    padding-top: 0px;
+    position: absolute;
+    top: 70px;
+    bottom: 120px;
+    margin-bottom: 70px;
+    z-index: 999;
+`;
+
+export const CountryButtonSelect = styled.TouchableOpacity`
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: ${colors.violetPrimary};
+    padding: 10px;
+`;
+
+export const CountryItem = styled.Text`
+    font-size: ${scaledSize(16)}px;
+    font-weight: bold;
+    color: ${colors.blackPrimary};
+`
+
+export const ServicesMultiValueInput = styled.TextInput`
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: ${colors.graySecondary};
+    padding: 10px;
+    margin-top: 10px;
+`;
+
+export const ServiceBadgeInput = styled.TouchableOpacity`
+   font-size: ${scaledSize(12)}px;
+    font-weight: bold;
+    color: ${colors.whitePrimary};
+    background-color: ${colors.violetPrimary};
+    padding: ${heightPercentageToDP('1%')}px ${widthPercentageToDP('2%')}px;
+    text-align: center;
+    height: 80%;
+    margin: ${heightPercentageToDP('1%')}px;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    align-items: center;
+`;
+
+export const ServiceBadgeInputText = styled.Text`
+    font-size: ${scaledSize(12)}px;
+    font-weight: bold;
+    color: ${colors.whitePrimary};
+    text-align: center;
+    margin-right: 10px;
+`;
+
+export const DescripitionInput = styled.TextInput`
+    width: 80%;
+    height: 100px;
+    border-radius: 10px;
+    background-color: ${colors.graySecondary};
+    padding: 10px;
+    margin-top: 20px;
+`;
+
+
+export const CheckBoxContainer = styled.View`
+    width: 80%;
+`;
+
+export const LabelContainer = styled.View`
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 10px;
+    width: ${widthPercentageToDP('80%')}px;
+`;
+
+export const LabelText = styled.Text`
+    font-size: ${scaledSize(24)}px;
+    font-weight: bold;
+    color: ${colors.blackPrimary};
+    margin-left: 10px;
+`;
+
+
+export const ButtonSaveContainer = styled.View`
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+`;
+
+export const ButtonSave = styled.TouchableOpacity`
+    width: 40%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: ${colors.violetPrimary};
+    padding: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+`;
+
+export const SaveText = styled.Text`
+    font-size: ${scaledSize(16)}px;
+    font-weight: bold;
+    color: ${colors.whitePrimary};
+    margin-right: 10px;
+`;

@@ -15,8 +15,10 @@ export const colors = {
     whitePrimary: '#FFF',
     transparent: 'transparent',
     grayPrimary: '#F2F2F2',
+    graySecondary: '#E5E5E5',
     violetPrimary: '#5E50A1',
     blackPrimary: '#000',
+    redPrimary: '#FF0000',
 }
 
 export const fonts = {
