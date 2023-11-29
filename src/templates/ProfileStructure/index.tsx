@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { MaterialIcons } from '@expo/vector-icons';
 import {
   ButtonSave,
@@ -17,6 +17,9 @@ import {
   DescriptionContainer,
   EditImageButton,
   EditProfileDataButton,
+  ExitButton,
+  ExitButtonContainer,
+  ExitText,
   ImageContainer,
   ImageProfile,
   InputCellphone,
@@ -40,6 +43,10 @@ import { useUser } from "../../stores/User";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { colors } from "../../Styles/theme";
 import { CheckboxArea } from "../../Molecules/CheckboxArea";
+import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../../firebaseConfig";
 
 const COUNTRIES = ['Brasil', 'Argentina', 'Chile', 'Colombia', 'Uruguai', 'Paraguai']
 
@@ -57,11 +64,11 @@ const KeyCodes = {
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
-export function ProfileStructure({ navigation }: any) {
+function ProfileStructure({ navigation }: any) {
   const services = ['servico 1', 'servico 2', 'servico 3', 'servico 1', 'servico 2', 'servico 3', 'servico 1', 'servico 2', 'servico 3']
   const [modalNameVisibility, setModalNameVisibility] = React.useState(false);
 
-  const { user } = useUser(state => state)
+  const { user, setUser } = useUser(state => state)
 
   const [state, setState] = useState({
     displayName: user.displayName || " - ",
@@ -70,22 +77,23 @@ export function ProfileStructure({ navigation }: any) {
     description: user.country || " - ",
     services: user.services || [],
     isProfessional: user.isProfessional || false,
+    photoURL: user.photoURL || "",
+    email: user.email || "",
+    uid: user.uid || "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
   const [searchingCountry, setSearchingCountry] = useState(false);
   const [servicesAutoFocus, setServicesAutoFocus] = useState(false);
+  const [servicesList, setServicesList] = useState<string[]>([]);
+  const [serviceInput, setServiceInput] = useState<string>('');
   /**
-   * 1 - Criar o modal de inputs
+   * 1 - Criar o modal de inputs V
    * 2 - Criar a integração de criar o usuario no firestore
    * 3 - Criar a integração de atualizar o usuario no firestore
    */
 
 
-  console.log('state.country', state.country)
-
-  const [servicesList, setServicesList] = useState<string[]>([]);
-  const [serviceInput, setServiceInput] = useState<string>('');
 
 
   const setServices =
@@ -102,13 +110,60 @@ export function ProfileStructure({ navigation }: any) {
     setServicesList(servicesList.filter(item => item !== service))
     setState({ ...state, services: newServices })
   }
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true
+    });
+
+    if (!result.canceled) {
+      let image = ""
+      // if(result.assets[0].base64) image = "data:image/jpeg;base64,"+ result.assets[0].base64
+      // const newState = { ...state, photoURL: image }
+      const newState = { ...state, photoURL: result.assets[0].uri }
+      console.log('newState', newState)
+      setState(newState);
+      // setTimeout(() => {
+      //   saveUser()
+      // }
+      // , 1000);
+      // await AsyncStorage.setItem("uriProfile", result.uri);
+    }
+  };
+
+  const saveUser = async () => {
+    try {
+
+      const docRef = await updateDoc(doc(db, "users", user.id), state);
+      console.log("Document updated with ID: ", docRef);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+    finally {
+      setIsEditing(false)
+    }
+  }
+
+  useEffect(() => {
+    if (state.photoURL) saveUser()
+  }
+    , [state.photoURL])
   return (
     <PageContainer>
       <>
         <ContentContainer >
           <ImageContainer>
-            <ImageProfile />
-            <EditImageButton>
+            <ImageProfile source={
+              state.photoURL?.toString().includes("file")
+                ?
+                { uri: state.photoURL }
+                : state.photoURL
+            } />
+            <EditImageButton onPress={pickImage}>
               <MaterialIcons name="mode-edit" size={24} color="black" />
             </EditImageButton>
           </ImageContainer>
@@ -147,6 +202,16 @@ export function ProfileStructure({ navigation }: any) {
               </LabelContainer>
               <DescripitionText>{state.description}</DescripitionText>
             </DescriptionContainer>
+
+            <ExitButtonContainer>
+              <ExitButton onPress={() => {
+                setUser({})
+                AsyncStorage.multiRemove(['@user', '@uid'])
+              }}>
+                <ExitText>Exit</ExitText>
+                <MaterialIcons name="logout" size={24} color={colors.whitePrimary} />
+              </ExitButton>
+            </ExitButtonContainer>
           </DataContainer>
             : (
               <DataContainer>
@@ -231,10 +296,7 @@ export function ProfileStructure({ navigation }: any) {
                         </CheckBoxContainer>
 
                         <ButtonSaveContainer>
-                          <ButtonSave onPress={() => {
-                            setIsEditing(false)
-                            //todo call update user
-                          }}>
+                          <ButtonSave onPress={saveUser}>
                             <SaveText>Save</SaveText>
                             <MaterialIcons name="save" size={24} color={colors.whitePrimary} />
                           </ButtonSave>
@@ -250,3 +312,5 @@ export function ProfileStructure({ navigation }: any) {
     </PageContainer>
   );
 }
+
+export default memo(ProfileStructure);

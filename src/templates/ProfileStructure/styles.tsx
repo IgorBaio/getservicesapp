@@ -4,7 +4,7 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { CountriesListProps } from './types'
 
 export const ContentContainer = styled.ScrollView`
-
+    margin-top: ${heightPercentageToDP('5%')}px;
 `
 export const ImageContainer = styled.View`
     flex-direction: row;
@@ -170,7 +170,7 @@ export const CountryContainer = styled.View`
 
 export const CountriesList = styled.FlatList<CountriesListProps>`
     width: 80%;
-    height: ${({height} : CountriesListProps)=>heightPercentageToDP(!!height ? `${height*10}%` : '30%')}px;
+    height: ${({ height }: CountriesListProps) => heightPercentageToDP(!!height ? `${height * 10}%` : '30%')}px;
     border-radius: 10px;
     background-color: ${colors.graySecondary};
     padding: ${heightPercentageToDP('2%')}px ${widthPercentageToDP('2%')}px;
@@ -279,6 +279,33 @@ export const ButtonSave = styled.TouchableOpacity`
 `;
 
 export const SaveText = styled.Text`
+    font-size: ${scaledSize(16)}px;
+    font-weight: bold;
+    color: ${colors.whitePrimary};
+    margin-right: 10px;
+`;
+
+export const ExitButtonContainer = styled.View`
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+`;
+
+export const ExitButton = styled.TouchableOpacity`
+    width: 40%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: ${colors.redPrimary};
+    padding: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+`;
+
+export const ExitText = styled.Text`
     font-size: ${scaledSize(16)}px;
     font-weight: bold;
     color: ${colors.whitePrimary};

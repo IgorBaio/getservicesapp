@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { colors } from '../../Styles/theme';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
-import { InputLoginProps } from './types';
+import { InputRegisterProps } from './types';
 
 export const TitleContainer = styled.View`
     width: 100%;
@@ -24,23 +24,23 @@ export const InputContainer = styled.View`
     align-items: center;
 `;
 
-export const InputLogin = styled.TextInput<InputLoginProps>`
+export const InputRegister = styled.TextInput<InputRegisterProps>`
     width: 80%;
     height: 50px;
     border-radius: 10px;
     background-color: ${colors.graySecondary};
     padding: 10px;
-    margin-top: ${({ marginTop }: InputLoginProps) => heightPercentageToDP(marginTop || 0)}px;
+    margin-top: ${({ marginTop }: InputRegisterProps) => heightPercentageToDP(marginTop || 0)}px;
 `;
 
-export const ButtonLoginGoogleContainer = styled.View`
+export const ButtonRegisterGoogleContainer = styled.View`
     width: 100%;
     height: 20%;
     justify-content: center;
     align-items: center;
 `;
 
-export const ButtonLoginGoogle = styled.TouchableOpacity`
+export const ButtonRegisterGoogle = styled.TouchableOpacity`
     width: ${widthPercentageToDP('80%')}px;
     height: 50px;
     border-radius: 100px;
@@ -51,51 +51,25 @@ export const ButtonLoginGoogle = styled.TouchableOpacity`
 
 `;
 
-export const LoginWithGoogleText = styled.Text`
+export const RegisterWithGoogleText = styled.Text`
     font-size: 20px;
     font-weight: bold;
     color: ${colors.whitePrimary};
     margin-left: ${widthPercentageToDP('5%')}px;
 `;
 
-export const ButtonLoginContainer = styled.View`
+export const ButtonRegisterContainer = styled.View`
     width: 100%;
     height: 20%;
     justify-content: center;
     align-items: center;
 `;
 
-export const ButtonLogin = styled.TouchableOpacity`
+export const ButtonRegister = styled.TouchableOpacity`
     width: ${widthPercentageToDP('80%')}px;
     height: 50px;
     border-radius: 100px;
     background-color: ${colors.redPrimary};
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-
-`;
-
-export const LoginText = styled.Text`
-    font-size: 20px;
-    font-weight: bold;
-    color: ${colors.whitePrimary};
-    margin-left: ${widthPercentageToDP('5%')}px;
-    justify-content: center;
-    align-items: center;
-`;
-
-export const RegisterLinkContainer = styled.View`
-    width: 100%;
-    height: 2%;
-    justify-content: center;
-    align-items: center;
-`;
-
-export const RegisterLink = styled.TouchableOpacity`
-    width: ${widthPercentageToDP('80%')}px;
-    height: 50px;
-    border-radius: 100px;
     justify-content: center;
     align-items: center;
     flex-direction: row;
@@ -103,6 +77,33 @@ export const RegisterLink = styled.TouchableOpacity`
 `;
 
 export const RegisterText = styled.Text`
+    font-size: 20px;
+    font-weight: bold;
+    color: ${colors.whitePrimary};
+    margin-left: ${widthPercentageToDP('5%')}px;
+    justify-content: center;
+    align-items: center;
+`;
+
+
+export const LoginLinkContainer = styled.View`
+    width: 100%;
+    height: 2%;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const LoginLink = styled.TouchableOpacity`
+    width: ${widthPercentageToDP('80%')}px;
+    height: 50px;
+    border-radius: 100px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+`;
+
+export const LoginText = styled.Text`
     font-size: 16px;
     font-weight: bold;
     color: ${colors.violetPrimary};

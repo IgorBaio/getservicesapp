@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PageContainer } from "../../Molecules/PageContainer";
-import { ButtonLogin, ButtonLoginContainer, InputContainer, InputLogin, LoginText, TitleContainer, TitlePage } from "./styles";
+import { ButtonLogin, ButtonLoginContainer, InputContainer, InputLogin, LoginText, RegisterLink, RegisterLinkContainer, RegisterText, TitleContainer, TitlePage } from "./styles";
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 import { getUserStorage } from "../../functions/getUser";
 import { colors } from "../../Styles/theme";
@@ -123,6 +123,12 @@ export const LoginStructure = ({ navigation }: any) => {
                     />
 
                 </InputContainer>
+                <RegisterLinkContainer>
+                    <RegisterLink onPress={() => navigation.navigate('RegisterScreen')}>
+                        <RegisterText>Sign up</RegisterText>
+                    </RegisterLink>
+                </RegisterLinkContainer>
+
                 <ButtonLoginContainer>
                     <ButtonLogin onPress={onAuthStateChanged} >
                         <LoginText>Login </LoginText>

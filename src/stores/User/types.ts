@@ -36,5 +36,6 @@ export interface UserModel {
     country: string;
     description: string;
     isProfessional: boolean;
+    id: string;
 
 }

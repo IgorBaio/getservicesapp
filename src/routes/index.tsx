@@ -8,10 +8,11 @@ import { useCurrentRoute } from '../stores';
 import { AppState } from 'react-native';
 import { useScreen } from '../stores/screen';
 import { RegisterStackScreen } from './stacks/RegisterStackScreen';
-import { firebaseConfig } from '../../firebaseConfig';
+import { db, firebaseConfig } from '../../firebaseConfig';
 import { initializeApp } from 'firebase/app';
 import { useUser } from '../stores/User';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { collection, getDocs } from 'firebase/firestore';
 
 export type RootStackParamList = {
   HomeScreen: undefined;
@@ -24,46 +25,44 @@ export type RootStackParamList = {
     screen?: string;
   };
   LoginScreen: undefined;
+  RegisterScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function StackRoutes() {
   // const {isRouteNeedLogged} = useAppSelector(state=> state.needLogged)
-  const {setUser} = useUser(state => state)
-
-
-  // const email = "teste@email3.com"
-  // const password = "123456"
-
-  // const app = initializeApp(firebaseConfig);
-  // const auth = getAuth(app);
-  // createUserWithEmailAndPassword(auth, email, password)
-  //   .then((userCredential) => {
-  //     // Signed in 
-  //     const user = userCredential.user;
-  //     console.log('userCredential', userCredential)
-  //     console.log('user', user)
-  //     setUser(user)
-  //     AsyncStorage.setItem('@user', JSON.stringify(user))
-  //     // ...
-  //   })
-  //   .catch((error) => {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     // ..
-  //   });
-
-
   const [loading, setLoading] = useState(false);
   const [uid, setUid] = useState<string>();
   const { screen } = useScreen((state) => state);
-  const { user } = useUser((state) => state);
+  const { user, setUser } = useUser((state) => state);
+
+  const getUserByDB = async () => {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    console.log('querySnapshot.docs', querySnapshot.docs[0].data())
+    const userByDb = querySnapshot.docs?.find((doc) => doc.data().uid === user.uid);
+    console.log('userByDb', userByDb?.data())
+    console.log('userByDb?.data()', userByDb?.data().id)
+    setUid(userByDb?.data()?.uid)
+    setUser(userByDb?.data())
+    // return 
+  }
 
 
   useEffect(() => {
-    if(user.uid){
+    // console.log('\n\n\n\n\n')
+    // console.log('user.uid', user.uid)
+    // console.log('uid', uid)
+    // console.log('\n\n\n\n\n')
+    if (user.uid && user.uid !== uid) {
+       getUserByDB()
+      //  console.log('userByDb', userByDb)
+
+
       setUid(user.uid)
+    }
+    else if(!user.uid) {
+      setUid('')
     }
   }, [user]);
 
