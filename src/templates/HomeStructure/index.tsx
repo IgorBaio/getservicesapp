@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   ScrollView,
@@ -16,6 +16,7 @@ import {
   ScrollHome,
 } from "./styles";
 import { Gallery } from "../../Organisms/Gallery";
+import { useUser } from "../../stores/User";
 
 const styles = StyleSheet.create({
   container: {
@@ -37,11 +38,12 @@ const styles = StyleSheet.create({
 });
 
 export function HomeStructure({ navigation }: any) {
+  const { users } = useUser((state) => state);
   return (
     <HomeContainer>
       <FeedContainer>
         <GalleryContainer>
-          <Gallery items={DATA_CATALOGO || []} navigation={navigation} />
+          <Gallery items={users || []} navigation={navigation} />
         </GalleryContainer>
       </FeedContainer>
     </HomeContainer>

@@ -91,6 +91,7 @@ export const LoginLinkContainer = styled.View`
     height: 2%;
     justify-content: center;
     align-items: center;
+    margin-top: ${heightPercentageToDP('2%')}px;
 `;
 
 export const LoginLink = styled.TouchableOpacity`

@@ -13,6 +13,9 @@ export const scaledSize = (size: number) => Math.ceil(size * scale)
 
 export const colors = {
     whitePrimary: '#FFF',
+    bluePrimary: '#012169',
+    greenPrimary: '#009739',
+    yellowPrimary: '#fedd00',
     transparent: 'transparent',
     grayPrimary: '#F2F2F2',
     graySecondary: '#E5E5E5',

@@ -35,10 +35,10 @@ import {
   ServiceBadgeInput,
   ServiceBadgeInputText,
   ServicesBadgesContainer,
-  ServicesMultiValueInput
+  ServicesMultiValueInput,
 } from "./styles";
 import { PageContainer } from "../../Molecules/PageContainer";
-import { Platform } from "react-native";
+import { FlatList, Platform, Text, View } from "react-native";
 import { useUser } from "../../stores/User";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { colors } from "../../Styles/theme";
@@ -47,6 +47,8 @@ import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
+import { FlatGrid } from "react-native-super-grid";
+import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 
 const COUNTRIES = ['Brasil', 'Argentina', 'Chile', 'Colombia', 'Uruguai', 'Paraguai']
 
@@ -74,7 +76,7 @@ function ProfileStructure({ navigation }: any) {
     displayName: user.displayName || " - ",
     phoneNumber: user.phoneNumber || " - ",
     country: user.country || " - ",
-    description: user.country || " - ",
+    description: user.description || " - ",
     services: user.services || [],
     isProfessional: user.isProfessional || false,
     photoURL: user.photoURL || "",
@@ -85,16 +87,8 @@ function ProfileStructure({ navigation }: any) {
   const [isEditing, setIsEditing] = useState(false);
   const [searchingCountry, setSearchingCountry] = useState(false);
   const [servicesAutoFocus, setServicesAutoFocus] = useState(false);
-  const [servicesList, setServicesList] = useState<string[]>([]);
+  const [servicesList, setServicesList] = useState<string[]>(user.services || []);
   const [serviceInput, setServiceInput] = useState<string>('');
-  /**
-   * 1 - Criar o modal de inputs V
-   * 2 - Criar a integração de criar o usuario no firestore
-   * 3 - Criar a integração de atualizar o usuario no firestore
-   */
-
-
-
 
   const setServices =
     () => {
@@ -168,7 +162,8 @@ function ProfileStructure({ navigation }: any) {
             </EditImageButton>
           </ImageContainer>
           <SectionSeparator />
-          {!isEditing ? <DataContainer>
+          {!isEditing ? 
+          <DataContainer>
             <LabelContainer>
               <LabelText>Name:</LabelText>
             </LabelContainer>
@@ -269,19 +264,20 @@ function ProfileStructure({ navigation }: any) {
                           onSubmitEditing={() => setServices()}
                           autoFocus={servicesAutoFocus}
                         />
+                        
                         <ServicesBadgesContainer>
-                          {servicesList.map((service, index) => {
-                            return <ServiceBadgeInput key={index}
-                              onPress={() => onRemoveService(service)
-                              }
-                            >
-                              <ServiceBadgeInputText>
-                                {service}
-                              </ServiceBadgeInputText>
-                              <SimpleLineIcons name="close" size={18} color={colors.whitePrimary} />
-                            </ServiceBadgeInput>
-                          })}
-                        </ServicesBadgesContainer>
+                             {servicesList.map((service, index) => {
+                               return <ServiceBadgeInput key={index}
+                                 onPress={() => onRemoveService(service)
+                                 }
+                               >
+                                 <ServiceBadgeInputText>
+                                   {service}
+                                 </ServiceBadgeInputText>
+                                 <SimpleLineIcons name="close" size={18} color={colors.whitePrimary} />
+                               </ServiceBadgeInput>
+                             })}
+                           </ServicesBadgesContainer>
 
                         <DescripitionInput
                           placeholder="Description"

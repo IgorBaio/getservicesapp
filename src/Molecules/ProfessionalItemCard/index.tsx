@@ -31,7 +31,11 @@ export const ProfessionalItemCard = ({
         <View>
           <AspectRadioView >
             <Image
-              source={uri}
+              source={
+                uri?.toString().includes("file")
+                  ?
+                  { uri }
+                  : uri}
               size="container"
               resizeMode="contain"
               style={{

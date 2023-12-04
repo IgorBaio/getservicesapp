@@ -1,6 +1,8 @@
 export interface UseUserProps {
     user: UserModel
+    users: UserModel[];
     setUser: (data: any) => void;
+    setUsers: (data: any) => void;
 }
 
 export interface ProviderData {

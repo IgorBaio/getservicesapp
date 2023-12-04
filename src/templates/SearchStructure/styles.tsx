@@ -15,7 +15,6 @@ export const ScrollSearch = styled.ScrollView<ScrollSearchProps>`
     `
 
 export const FeedContainer = styled.View`
-    margin: ${heightPercentageToDP('5%')}px 0;
 `
 export const GalleryContainer = styled.View`
 justify-content: center;
@@ -26,11 +25,9 @@ export const InputContainer = styled.View`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    margin-top: ${heightPercentageToDP('5%')}px;
-    margin-bottom: ${heightPercentageToDP('2%')}px;
+    margin-top: ${heightPercentageToDP('10%')}px;
     margin-left: ${widthPercentageToDP('5%')}px;
     margin-right: ${widthPercentageToDP('5%')}px;
-    /* background-color: red; */
 
     
 `
@@ -64,7 +61,7 @@ export const InputCheckBox = styled.View<CheckBoxStructureProps>`
     height: 45%;
     justify-content: center;
     align-items: center;
-    background-color: ${({isSelected}: CheckBoxStructureProps)=> isSelected ? colors.violetPrimary : colors.whitePrimary};
+    background-color: ${({ isSelected }: CheckBoxStructureProps) => isSelected ? colors.violetPrimary : colors.whitePrimary};
     margin-right: 10px;
     border-radius: 5px;
     border: 1px solid ${colors.blackPrimary};

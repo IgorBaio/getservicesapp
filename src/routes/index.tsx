@@ -13,6 +13,7 @@ import { initializeApp } from 'firebase/app';
 import { useUser } from '../stores/User';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { collection, getDocs } from 'firebase/firestore';
+import { getAllProfessionalsUsers } from '../services/firebase';
 
 export type RootStackParamList = {
   HomeScreen: undefined;
@@ -35,7 +36,7 @@ function StackRoutes() {
   const [loading, setLoading] = useState(false);
   const [uid, setUid] = useState<string>();
   const { screen } = useScreen((state) => state);
-  const { user, setUser } = useUser((state) => state);
+  const { user, setUser, setUsers } = useUser((state) => state);
 
   const getUserByDB = async () => {
     const querySnapshot = await getDocs(collection(db, "users"));
@@ -60,6 +61,12 @@ function StackRoutes() {
 
 
       setUid(user.uid)
+      getAllProfessionalsUsers().then((users) => {
+        const usersFiltredDifferentByMe = users.filter((professional) => professional.uid !== user.uid)
+        setUsers(usersFiltredDifferentByMe)
+      }
+     ).catch((err) => {
+     })
     }
     else if(!user.uid) {
       setUid('')

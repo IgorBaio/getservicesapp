@@ -20,16 +20,15 @@ import {
   InputCheckBoxLabel,
 } from "./styles";
 import { Gallery } from "../../Organisms/Gallery";
-import { DATA_CATALOGO } from "../HomeStructure/components/data";
-import { Checkbox } from "react-native-paper";
 import { useFilters } from "../../stores/Filters";
 import { colors } from "../../Styles/theme";
 import { MaterialIcons } from '@expo/vector-icons';
+import { useUser } from "../../stores/User";
 
 
 export function SearchStructure({ navigation }: any) {
   const { nationality, setNationality } = useFilters(state => state);
-
+  const { users } = useUser((state) => state);
   return (
     <SearchContainer>
       <InputContainer>
@@ -46,7 +45,7 @@ export function SearchStructure({ navigation }: any) {
       </InputContainer>
       <FeedContainer>
         <GalleryContainer>
-          <Gallery items={DATA_CATALOGO || []} navigation={navigation} />
+          <Gallery items={users || []} navigation={navigation} />
         </GalleryContainer>
       </FeedContainer>
     </SearchContainer>

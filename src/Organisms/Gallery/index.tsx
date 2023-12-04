@@ -22,9 +22,9 @@ export const Gallery = ({ items, navigation }: any) => {
           id={item.id}
           country={item.country}
           description={item.description}
-          name={item.name}
+          name={item.displayName}
           services={item.services}
-          uri={item.uri}
+          uri={item.photoURL}
           key={`${item.id}`}
         />
       )}

@@ -15,11 +15,16 @@ export const useUser = create<UseUserProps>()(
             country: '',
             description: '',
             isProfessional: false,
+            id: '',
           
         },
+        users: [],
         setUser: (data) => {
             set({ user: data })
-        }
+        },
+        setUsers: (data) => {
+            set({ users: data })
+        },
     }),
         {
             name: 'user-storage',

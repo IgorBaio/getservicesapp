@@ -14,8 +14,8 @@ import { UserModel } from "../../stores/User/types";
 
 export const RegisterStructure = ({ navigation }: any) => {
     const [user, setUserState] = useState();
-    const [email, setEmail] = useState("teste@email1.com");
-    const [password, setPassword] = useState("123456");
+    const [email, setEmail] = useState<string>();
+    const [password, setPassword] = useState<string>();
     const [messageError, setMessageError] = useState<string>();
 
     const { setUser } = useUser(state => state)
@@ -89,11 +89,16 @@ export const RegisterStructure = ({ navigation }: any) => {
                     <TitlePage>Register.</TitlePage>
                 </TitleContainer>
                 <InputContainer>
-                    <InputRegister placeholder="Email" />
+                    <InputRegister placeholder="Email" 
+                        value={email}
+                        onChangeText={(text: string) => setEmail(text)}
+                    />
                     <InputRegister
                         placeholder="Password"
                         secureTextEntry={true}
                         marginTop={'2%'}
+                        value={password}
+                        onChangeText={(text: string) => setPassword(text)}
 
                     />
 
@@ -109,12 +114,6 @@ export const RegisterStructure = ({ navigation }: any) => {
                         <MaterialIcons name="login" size={24} color={colors.whitePrimary} />
                     </ButtonRegister>
                 </ButtonRegisterContainer>
-                {/* <ButtonRegisterGoogleContainer>
-                    <ButtonRegisterGoogle onPress={() => googleRegister()} >
-                        <FontAwesome name="google" size={24} color={colors.whitePrimary} />
-                        <RegisterWithGoogleText>Register with Google</RegisterWithGoogleText>
-                    </ButtonRegisterGoogle>
-                </ButtonRegisterGoogleContainer> */}
             </>
         </PageContainer>
     )
