@@ -24,7 +24,7 @@ export const Gallery = ({ items, navigation }: any) => {
           description={item.description}
           name={item.displayName}
           services={item.services}
-          uri={item.photoURL}
+          uri={item}
           key={`${item.id}`}
         />
       )}

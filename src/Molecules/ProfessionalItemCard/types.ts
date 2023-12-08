@@ -1,5 +1,7 @@
+import { UserModel } from "../../stores/User/types"
+
 export interface ProfessionalItemCardProps {
-    uri: any//TODO virar base64
+    uri: UserModel
     id: number
     name: string
     description: string

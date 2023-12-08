@@ -16,6 +16,7 @@ import { getEllipsisText } from "../../functions/getEllipsisText";
 import { View } from "react-native";
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 import { Services } from "../Services";
+import { setPhotoURL } from "../../functions/setPhoto";
 
 export const ProfessionalItemCard = ({
   description,
@@ -31,11 +32,7 @@ export const ProfessionalItemCard = ({
         <View>
           <AspectRadioView >
             <Image
-              source={
-                uri?.toString().includes("file")
-                  ?
-                  { uri }
-                  : uri}
+              source={setPhotoURL(uri)}
               size="container"
               resizeMode="contain"
               style={{

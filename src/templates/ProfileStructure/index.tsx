@@ -38,17 +38,17 @@ import {
   ServicesMultiValueInput,
 } from "./styles";
 import { PageContainer } from "../../Molecules/PageContainer";
-import { FlatList, Platform, Text, View } from "react-native";
+import { Platform } from "react-native";
 import { useUser } from "../../stores/User";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { colors } from "../../Styles/theme";
 import { CheckboxArea } from "../../Molecules/CheckboxArea";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
-import { FlatGrid } from "react-native-super-grid";
-import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
+import { setPhotoURL } from "../../functions/setPhoto";
+import { UserModel } from "../../stores/User/types";
 
 const COUNTRIES = ['Brasil', 'Argentina', 'Chile', 'Colombia', 'Uruguai', 'Paraguai']
 
@@ -71,6 +71,7 @@ function ProfileStructure({ navigation }: any) {
   const [modalNameVisibility, setModalNameVisibility] = React.useState(false);
 
   const { user, setUser } = useUser(state => state)
+  console.log('user ProfileStructure', user)
 
   const [state, setState] = useState({
     displayName: user.displayName || " - ",
@@ -83,6 +84,7 @@ function ProfileStructure({ navigation }: any) {
     email: user.email || "",
     uid: user.uid || "",
   });
+  console.log('state', state)
 
   const [isEditing, setIsEditing] = useState(false);
   const [searchingCountry, setSearchingCountry] = useState(false);
@@ -146,68 +148,77 @@ function ProfileStructure({ navigation }: any) {
     if (state.photoURL) saveUser()
   }
     , [state.photoURL])
+
+  useEffect(() => {
+    setState({
+      displayName: user.displayName || " - ",
+      phoneNumber: user.phoneNumber || " - ",
+      country: user.country || " - ",
+      description: user.description || " - ",
+      services: user.services || [],
+      isProfessional: user.isProfessional || false,
+      photoURL: user.photoURL || "",
+      email: user.email || "",
+      uid: user.uid || "",
+    })
+  }, [user])
   return (
     <PageContainer>
       <>
         <ContentContainer >
           <ImageContainer>
-            <ImageProfile source={
-              state.photoURL?.toString().includes("file")
-                ?
-                { uri: state.photoURL }
-                : state.photoURL
-            } />
+            <ImageProfile source={setPhotoURL(state as UserModel)} />
             <EditImageButton onPress={pickImage}>
               <MaterialIcons name="mode-edit" size={24} color="black" />
             </EditImageButton>
           </ImageContainer>
           <SectionSeparator />
-          {!isEditing ? 
-          <DataContainer>
-            <LabelContainer>
-              <LabelText>Name:</LabelText>
-            </LabelContainer>
-            <NameEditContainer>
-
-              <NameTitle>{state.displayName}</NameTitle>
-              <EditProfileDataButton onPress={() => setIsEditing(true)}>
-                <MaterialIcons name="mode-edit" size={24} color="black" />
-              </EditProfileDataButton>
-            </NameEditContainer>
-            <LabelContainer>
-              <LabelText>Phone:</LabelText>
-            </LabelContainer>
-            <CellphoneTitle>{state.phoneNumber}</CellphoneTitle>
-            <LabelContainer>
-              <LabelText>Country:</LabelText>
-            </LabelContainer>
-            <CountryTitle>{state.country}</CountryTitle>
-            <LabelContainer>
-              <LabelText>Services:</LabelText>
-            </LabelContainer>
-            <ServicesBadgesContainer>
-              {state.services.map((service, index) => {
-                return <ServiceBadge key={index}>{service}</ServiceBadge>
-              })
-              }
-            </ServicesBadgesContainer>
-            <DescriptionContainer>
+          {!isEditing ?
+            <DataContainer>
               <LabelContainer>
-                <LabelText>Description:</LabelText>
+                <LabelText>Name:</LabelText>
               </LabelContainer>
-              <DescripitionText>{state.description}</DescripitionText>
-            </DescriptionContainer>
+              <NameEditContainer>
 
-            <ExitButtonContainer>
-              <ExitButton onPress={() => {
-                setUser({})
-                AsyncStorage.multiRemove(['@user', '@uid'])
-              }}>
-                <ExitText>Exit</ExitText>
-                <MaterialIcons name="logout" size={24} color={colors.whitePrimary} />
-              </ExitButton>
-            </ExitButtonContainer>
-          </DataContainer>
+                <NameTitle>{state.displayName}</NameTitle>
+                <EditProfileDataButton onPress={() => setIsEditing(true)}>
+                  <MaterialIcons name="mode-edit" size={24} color="black" />
+                </EditProfileDataButton>
+              </NameEditContainer>
+              <LabelContainer>
+                <LabelText>Phone:</LabelText>
+              </LabelContainer>
+              <CellphoneTitle>{state.phoneNumber}</CellphoneTitle>
+              <LabelContainer>
+                <LabelText>Country:</LabelText>
+              </LabelContainer>
+              <CountryTitle>{state.country}</CountryTitle>
+              <LabelContainer>
+                <LabelText>Services:</LabelText>
+              </LabelContainer>
+              <ServicesBadgesContainer>
+                {state.services.map((service, index) => {
+                  return <ServiceBadge key={index}>{service}</ServiceBadge>
+                })
+                }
+              </ServicesBadgesContainer>
+              <DescriptionContainer>
+                <LabelContainer>
+                  <LabelText>Description:</LabelText>
+                </LabelContainer>
+                <DescripitionText>{state.description}</DescripitionText>
+              </DescriptionContainer>
+
+              <ExitButtonContainer>
+                <ExitButton onPress={() => {
+                  setUser({})
+                  AsyncStorage.multiRemove(['@user', '@uid'])
+                }}>
+                  <ExitText>Exit</ExitText>
+                  <MaterialIcons name="logout" size={24} color={colors.whitePrimary} />
+                </ExitButton>
+              </ExitButtonContainer>
+            </DataContainer>
             : (
               <DataContainer>
                 <InputName
@@ -264,20 +275,20 @@ function ProfileStructure({ navigation }: any) {
                           onSubmitEditing={() => setServices()}
                           autoFocus={servicesAutoFocus}
                         />
-                        
+
                         <ServicesBadgesContainer>
-                             {servicesList.map((service, index) => {
-                               return <ServiceBadgeInput key={index}
-                                 onPress={() => onRemoveService(service)
-                                 }
-                               >
-                                 <ServiceBadgeInputText>
-                                   {service}
-                                 </ServiceBadgeInputText>
-                                 <SimpleLineIcons name="close" size={18} color={colors.whitePrimary} />
-                               </ServiceBadgeInput>
-                             })}
-                           </ServicesBadgesContainer>
+                          {servicesList.map((service, index) => {
+                            return <ServiceBadgeInput key={index}
+                              onPress={() => onRemoveService(service)
+                              }
+                            >
+                              <ServiceBadgeInputText>
+                                {service}
+                              </ServiceBadgeInputText>
+                              <SimpleLineIcons name="close" size={18} color={colors.whitePrimary} />
+                            </ServiceBadgeInput>
+                          })}
+                        </ServicesBadgesContainer>
 
                         <DescripitionInput
                           placeholder="Description"
