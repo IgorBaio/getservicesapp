@@ -22,10 +22,10 @@ export const InputCheckBox = styled.View<CheckBoxStructureProps>`
     height: 45%;
     justify-content: center;
     align-items: center;
-    background-color: ${({isSelected}: CheckBoxStructureProps)=> isSelected ? colors.violetPrimary : colors.whitePrimary};
+    background-color: ${({isSelected}: CheckBoxStructureProps)=> isSelected ? colors.bluePrimary : colors.whitePrimary};
     margin-right: 10px;
     border-radius: 5px;
-    border: 1px solid ${colors.blackPrimary};
+    border: 1px solid ${colors.yellowPrimary};
 `
 
 export const InputCheckBoxLabel = styled.Text`

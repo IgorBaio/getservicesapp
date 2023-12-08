@@ -8,7 +8,7 @@ import {
 } from "native-base";
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useScreen } from "../stores/screen";
-import { useAppDispatch } from "../app/hook";
+import { colors } from "../Styles/theme";
 
 interface MyTabBarProps {
   state: any;
@@ -36,9 +36,9 @@ export function MyTabBar({ navigation, state, descriptors }: MyTabBarProps) {
           }}
         >
           <Center>
-            <MaterialIcons name='home' size={24} color='black' />
-            <Text color="indigo.600" fontSize="12">
-              Home
+            <MaterialIcons name='home' size={24} color={screen == 0 ? colors.greenPrimary : colors.bluePrimary} />
+            <Text color={screen == 0 ? colors.greenPrimary : colors.bluePrimary} fontSize="12">
+              Início
             </Text>
           </Center>
         </Pressable>
@@ -52,9 +52,9 @@ export function MyTabBar({ navigation, state, descriptors }: MyTabBarProps) {
           }}
         >
           <Center>
-            <MaterialIcons name='search' size={24} color='black' />
-            <Text color="indigo.600" fontSize="12">
-              Search
+            <MaterialIcons name='search' size={24} color={screen == 1 ? colors.greenPrimary : colors.bluePrimary} />
+            <Text color={screen == 1 ? colors.greenPrimary : colors.bluePrimary} fontSize="12">
+              Procurar
             </Text>
           </Center>
         </Pressable>
@@ -68,9 +68,9 @@ export function MyTabBar({ navigation, state, descriptors }: MyTabBarProps) {
           }}
         >
           <Center>
-            <AntDesign name="user" size={24} color="black" />
-            <Text color="indigo.600" fontSize="12">
-              Profile
+            <AntDesign name="user" size={24} color={screen == 2 ? colors.greenPrimary : colors.bluePrimary} />
+            <Text color={screen == 2 ? colors.greenPrimary : colors.bluePrimary} fontSize="12">
+              Perfil
             </Text>
           </Center>
         </Pressable>

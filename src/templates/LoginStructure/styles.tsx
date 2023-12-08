@@ -28,35 +28,12 @@ export const InputLogin = styled.TextInput<InputLoginProps>`
     width: 80%;
     height: 50px;
     border-radius: 10px;
-    background-color: ${colors.graySecondary};
+    background-color: ${colors.bluePrimary};
+    color: ${colors.yellowPrimary};
     padding: 10px;
     margin-top: ${({ marginTop }: InputLoginProps) => heightPercentageToDP(marginTop || 0)}px;
 `;
 
-export const ButtonLoginGoogleContainer = styled.View`
-    width: 100%;
-    height: 20%;
-    justify-content: center;
-    align-items: center;
-`;
-
-export const ButtonLoginGoogle = styled.TouchableOpacity`
-    width: ${widthPercentageToDP('80%')}px;
-    height: 50px;
-    border-radius: 100px;
-    background-color: ${colors.redPrimary};
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-
-`;
-
-export const LoginWithGoogleText = styled.Text`
-    font-size: 20px;
-    font-weight: bold;
-    color: ${colors.whitePrimary};
-    margin-left: ${widthPercentageToDP('5%')}px;
-`;
 
 export const ButtonLoginContainer = styled.View`
     width: 100%;
@@ -69,7 +46,7 @@ export const ButtonLogin = styled.TouchableOpacity`
     width: ${widthPercentageToDP('80%')}px;
     height: 50px;
     border-radius: 100px;
-    background-color: ${colors.redPrimary};
+    background-color: ${colors.greenPrimary};
     justify-content: center;
     align-items: center;
     flex-direction: row;
@@ -90,6 +67,7 @@ export const RegisterLinkContainer = styled.View`
     height: 2%;
     justify-content: center;
     align-items: center;
+    margin-top: ${heightPercentageToDP('2%')}px;
 `;
 
 export const RegisterLink = styled.TouchableOpacity`
@@ -105,7 +83,7 @@ export const RegisterLink = styled.TouchableOpacity`
 export const RegisterText = styled.Text`
     font-size: 16px;
     font-weight: bold;
-    color: ${colors.violetPrimary};
+    color: ${colors.greenPrimary};
     justify-content: center;
     align-items: center;
     font-style: italic;

@@ -10,11 +10,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { initializeApp } from "firebase/app";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useUser } from "../../stores/User";
+import { GenericButton } from "../../Molecules/GenericButton";
+import { GenericInput } from "../../Molecules/GenericInput";
 
 export const LoginStructure = ({ navigation }: any) => {
     const [user, setUserState] = useState();
-    const [email, setEmail] = useState("teste@email3.com");
-    const [password, setPassword] = useState("123456");
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [messageError, setMessageError] = useState<string>();
 
     const { setUser } = useUser(state => state)
@@ -36,22 +38,12 @@ export const LoginStructure = ({ navigation }: any) => {
                 });
             if (userAccount === undefined || userAccount === null) return;
 
-            // const user = userAccount.user;
 
             const user = {
                 ...userAccount.user
             }
 
-
-
-            // await AsyncStorage.setItem("email", email);
-            // await AsyncStorage.setItem("password", password);
             AsyncStorage.setItem('@user', JSON.stringify(user))
-            // await AsyncStorage.setItem("@user", user);
-            console.log('userAccount', userAccount)
-            console.log('userAccount USER', userAccount.user)
-            console.log('\n\n\n\n\n USER', user)
-            // user.auth.displayName
             console.log('user.auth.displayName', user?.displayName)
             setUser(user)
             // user.displayName = "Igor"
@@ -111,14 +103,23 @@ export const LoginStructure = ({ navigation }: any) => {
         <PageContainer>
             <>
                 <TitleContainer>
-                    <TitlePage>Login.</TitlePage>
+                    <TitlePage>Entrar.</TitlePage>
                 </TitleContainer>
                 <InputContainer>
-                    <InputLogin placeholder="Email" />
-                    <InputLogin
+                    
+                    <GenericInput
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={(text: string) => setEmail(text)}
+
+                    />
+
+                    <GenericInput
                         placeholder="Password"
                         secureTextEntry={true}
-                        marginTop={'2%'}
+                        marginTop={'8%'}
+                        value={password}
+                        onChangeText={(text: string) => setPassword(text)}
 
                     />
 
@@ -129,18 +130,13 @@ export const LoginStructure = ({ navigation }: any) => {
                     </RegisterLink>
                 </RegisterLinkContainer>
 
-                <ButtonLoginContainer>
-                    <ButtonLogin onPress={onAuthStateChanged} >
-                        <LoginText>Login </LoginText>
+                <GenericButton onPress={onAuthStateChanged}>
+                    <>
+                        <LoginText>Entrar </LoginText>
                         <MaterialIcons name="login" size={24} color={colors.whitePrimary} />
-                    </ButtonLogin>
-                </ButtonLoginContainer>
-                {/* <ButtonLoginGoogleContainer>
-                    <ButtonLoginGoogle onPress={() => googleLogin()} >
-                        <FontAwesome name="google" size={24} color={colors.whitePrimary} />
-                        <LoginWithGoogleText>Login with Google</LoginWithGoogleText>
-                    </ButtonLoginGoogle>
-                </ButtonLoginGoogleContainer> */}
+                    </>
+                </GenericButton>
+
             </>
         </PageContainer>
     )

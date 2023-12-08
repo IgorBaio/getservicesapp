@@ -28,35 +28,12 @@ export const InputRegister = styled.TextInput<InputRegisterProps>`
     width: 80%;
     height: 50px;
     border-radius: 10px;
-    background-color: ${colors.graySecondary};
+    background-color: ${colors.greenPrimary};
+    color: ${colors.yellowPrimary};
     padding: 10px;
     margin-top: ${({ marginTop }: InputRegisterProps) => heightPercentageToDP(marginTop || 0)}px;
 `;
 
-export const ButtonRegisterGoogleContainer = styled.View`
-    width: 100%;
-    height: 20%;
-    justify-content: center;
-    align-items: center;
-`;
-
-export const ButtonRegisterGoogle = styled.TouchableOpacity`
-    width: ${widthPercentageToDP('80%')}px;
-    height: 50px;
-    border-radius: 100px;
-    background-color: ${colors.redPrimary};
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-
-`;
-
-export const RegisterWithGoogleText = styled.Text`
-    font-size: 20px;
-    font-weight: bold;
-    color: ${colors.whitePrimary};
-    margin-left: ${widthPercentageToDP('5%')}px;
-`;
 
 export const ButtonRegisterContainer = styled.View`
     width: 100%;
@@ -69,7 +46,7 @@ export const ButtonRegister = styled.TouchableOpacity`
     width: ${widthPercentageToDP('80%')}px;
     height: 50px;
     border-radius: 100px;
-    background-color: ${colors.redPrimary};
+    background-color: ${colors.bluePrimary};
     justify-content: center;
     align-items: center;
     flex-direction: row;
@@ -107,7 +84,7 @@ export const LoginLink = styled.TouchableOpacity`
 export const LoginText = styled.Text`
     font-size: 16px;
     font-weight: bold;
-    color: ${colors.violetPrimary};
+    color: ${colors.greenPrimary};
     justify-content: center;
     align-items: center;
     font-style: italic;
