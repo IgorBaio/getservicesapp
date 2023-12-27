@@ -3,7 +3,7 @@ import { colors } from "../../Styles/theme";
 import { InputGeneric, InputGenericContainer } from "./styles";
 import { GenericInputProps } from "./types";
 
-export const GenericInput = ({ placeholder, placeholderTextColor, onChangeText, value, secureTextEntry, marginTop }: GenericInputProps) => {
+export const GenericInput = ({ placeholder, placeholderTextColor, onChangeText, value, secureTextEntry, marginTop, keyboardType = 'default' }: GenericInputProps) => {
     console.log('placeholderTextColor', placeholderTextColor)
     console.log('placeholder', placeholder)
     const [isFocused, setIsFocused] = React.useState(false);
@@ -13,6 +13,7 @@ export const GenericInput = ({ placeholder, placeholderTextColor, onChangeText, 
             <InputGeneric
                 placeholder={placeholder} 
                 value={value} 
+                keyboardType={keyboardType}
                 onChangeText={onChangeText} 
                 placeholderTextColor={placeholderTextColor || colors.whitePrimary}
                 isFocused={isFocused}

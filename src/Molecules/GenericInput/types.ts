@@ -7,6 +7,7 @@ export interface GenericInputProps {
     onChangeText?: (text: string) => void
     secureTextEntry?: boolean
     marginTop?: string
+    keyboardType?: string
 }
 
 export interface InputProps {

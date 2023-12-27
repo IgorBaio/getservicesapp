@@ -4,8 +4,7 @@ import { colors } from "../../Styles/theme";
 import { InputProps } from "./types";
 
 export const InputGenericContainer = styled.View`
-     width: 100%;
-    height: 20%;
+    width: 100%;
     justify-content: center;
     align-items: center;
 `;

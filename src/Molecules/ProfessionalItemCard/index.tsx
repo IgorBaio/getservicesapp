@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Center,
-  Image,
   Stack,
 } from "native-base";
 import { ProfessionalItemCardProps } from "./types";
@@ -9,43 +8,35 @@ import {
   DescriptionText,
   Heading,
   Section,
-  AspectRadioView,
   CardContainer,
 } from "./styles";
 import { getEllipsisText } from "../../functions/getEllipsisText";
 import { View } from "react-native";
-import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 import { Services } from "../Services";
-import { setPhotoURL } from "../../functions/setPhoto";
+import { colors } from "../../Styles/theme";
+import { UserImageArea } from "../../Organisms/UserImageArea";
+import { useProfessional } from "../../stores/ProfessionalDetails";
 
 export const ProfessionalItemCard = ({
   description,
   id,
-  uri,
+  user,
   name,
   services,
   country,
+  navigation
 }: ProfessionalItemCardProps) => {
+  const { setProfessional } = useProfessional(state => state)
   return (
-    <CardContainer>
+    <CardContainer onPress={() => {
+      setProfessional(user)
+      navigation.navigate('DetailsScreen', { uid: id });
+    }}>
       <View>
         <View>
-          <AspectRadioView >
-            <Image
-              source={setPhotoURL(uri)}
-              size="container"
-              resizeMode="contain"
-              style={{
-                width: widthPercentageToDP('10%'),
-                height: heightPercentageToDP('15%'),
-                aspectRatio: 1.5,
-                resizeMode: "cover",
-              }}
-              alt="image"
-            />
-          </AspectRadioView>
+          <UserImageArea user={user} />
           <Center
-            bg="violet.500"
+            bg={colors.yellowPrimary}
             position="absolute"
             bottom="2"
             px="3"
