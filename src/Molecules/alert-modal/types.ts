@@ -4,6 +4,8 @@ export interface AlertModalProps {
 	onConfirm: () => void;
 	onCancel: () => void;
 	onSwipeCancel: () => void;
+	confirmText?: string;
+	cancelText?: string;
 }
 
 export interface TouchProps {

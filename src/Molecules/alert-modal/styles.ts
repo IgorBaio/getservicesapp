@@ -37,7 +37,7 @@ export const Touch = styled.TouchableOpacity<TouchProps>`
 	padding: 20px 0;
 	align-items: center;
 	border-radius: 15px;
-	background-color: ${({ backgroundColor }) => backgroundColor};
+	background-color: ${({ backgroundColor }: TouchProps) => backgroundColor};
 `;
 
 export const TitleContainer = styled.View`

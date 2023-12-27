@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AnimatedView, Background, Indicator, SafeArea, TitleContainer, Touch } from './styles';
 import { AlertModalProps } from './types';
+import { colors } from '../../Styles/theme';
 
 export function AlertModal({
 	title,
@@ -21,6 +22,8 @@ export function AlertModal({
 	onConfirm,
 	onCancel,
 	onSwipeCancel,
+	confirmText,
+	cancelText
 }: AlertModalProps) {
 	const insets = useSafeAreaInsets();
 
@@ -73,14 +76,14 @@ export function AlertModal({
 											fontWeight: 'bold',
 											marginBottom: 15,
 											textAlign: 'center',
-											color: 'white'
+											color: colors.yellowPrimary
 										}}
 									>
 										{title}
 									</Text>
 								</TitleContainer>
-								<Touch
-									backgroundColor="#A5AADE"
+								{!!confirmText &&  <Touch
+									backgroundColor={colors.bluePrimary}
 									onPress={() => {
 										y.value = withTiming(
 											hiddePosition,
@@ -93,11 +96,11 @@ export function AlertModal({
 										);
 									}}
 								>
-									<Text style={{ color: 'white' }}>
-										Confirm
+									<Text style={{ color: colors.whitePrimary }}>
+									{confirmText}
 									</Text>
-								</Touch>
-								<Touch
+								</Touch>}
+								{!!cancelText && <Touch
 									backgroundColor="transparent"
 									onPress={() => {
 										y.value = withTiming(
@@ -111,10 +114,10 @@ export function AlertModal({
 										);
 									}}
 								>
-									<Text style={{ color: 'white' }}>
-										Cancel
+									<Text style={{ color: colors.greenPrimary }}>
+										{cancelText}
 									</Text>
-								</Touch>
+								</Touch>}
 							</AnimatedView>
 						</PanGestureHandler>
 					</SafeArea>
