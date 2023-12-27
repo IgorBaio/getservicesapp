@@ -5,7 +5,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
-import { scaledSize } from "../../Styles/theme";
+import { colors } from "../../Styles/theme";
 import React from "react";
 
 export const Gallery = ({ items, navigation }: any) => {
@@ -24,8 +24,9 @@ export const Gallery = ({ items, navigation }: any) => {
           description={item.description}
           name={item.displayName}
           services={item.services}
-          uri={item}
+          user={item}
           key={`${item.id}`}
+          navigation={navigation}
         />
       )}
       contentContainerStyle={styles.itemContainer}
@@ -37,7 +38,6 @@ const styles = StyleSheet.create({
   gridView: {
     marginTop: 10,
     height: heightPercentageToDP("100%"),
-    // padding: scaledSize(35), //TODO responsavel por deixar alinhado
     marginBottom: heightPercentageToDP("42%"),
     padding: 0,
   },
@@ -47,16 +47,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     resizeMode: "contain",
     maxWidth: widthPercentageToDP("100%"),
-    backgroundColor: "#363636",
-  },
-  itemName: {
-    fontSize: 16,
-    color: "#fff",
-    fontWeight: "600",
-  },
-  itemCode: {
-    fontWeight: "600",
-    fontSize: 12,
-    color: "#fff",
-  },
+    backgroundColor: colors.whitePrimary,
+  }
 });

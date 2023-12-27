@@ -1,9 +1,10 @@
 import styled from "styled-components/native";
+import { colors } from "../../Styles/theme";
 
 export const ServicesContainer = styled.View``;
 
 export const ServicesText = styled.Text`
-  color: violet;
-  font-weight: 500;
-  font-size: 14px;
+  color: ${colors.bluePrimary};
+  font-weight: 700;
+  font-size: 16px;
 `;

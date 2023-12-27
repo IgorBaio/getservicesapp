@@ -8,12 +8,9 @@ import { useCurrentRoute } from '../stores';
 import { AppState } from 'react-native';
 import { useScreen } from '../stores/screen';
 import { RegisterStackScreen } from './stacks/RegisterStackScreen';
-import { db, firebaseConfig } from '../../firebaseConfig';
-import { initializeApp } from 'firebase/app';
 import { useUser } from '../stores/User';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { collection, getDocs } from 'firebase/firestore';
-import { getAllProfessionalsUsers } from '../services/firebase';
+import { getAllProfessionalsUsers, getUserByDB } from '../services/firebase';
+import ProfessionalDetails from '../pages/ProfessionalDetails';
 
 export type RootStackParamList = {
   HomeScreen: undefined;
@@ -27,40 +24,25 @@ export type RootStackParamList = {
   };
   LoginScreen: undefined;
   RegisterScreen: undefined;
+  DetailsScreen: {
+    uid: string
+  }
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function StackRoutes() {
-  // const {isRouteNeedLogged} = useAppSelector(state=> state.needLogged)
   const [loading, setLoading] = useState(false);
-  const [uid, setUid] = useState<string>();
   const { screen } = useScreen((state) => state);
-  const { user, setUser, setUsers } = useUser((state) => state);
-
-  const getUserByDB = async () => {
-    const querySnapshot = await getDocs(collection(db, "users"));
-    console.log('querySnapshot.docs', querySnapshot.docs[0].data())
-    const userByDb = querySnapshot.docs?.find((doc) => doc.data().uid === user.uid);
-    console.log('userByDb', userByDb?.data())
-    console.log('userByDb?.data()', userByDb?.data().id)
-    setUid(userByDb?.data()?.uid)
-    setUser(userByDb?.data())
-    // return 
-  }
-
+  const { user, setUser, setUsers, uid, setUid } = useUser((state) => state);
 
   useEffect(() => {
-    // console.log('\n\n\n\n\n')
-    // console.log('user.uid', user.uid)
-    // console.log('uid', uid)
-    // console.log('\n\n\n\n\n')
-    if (user.uid && user.uid !== uid) {
+    console.log('\n\n\n\n\n')
+    console.log('user.uid', user.uid)
+    console.log('uid', uid)
+    console.log('\n\n\n\n\n')
+    if (user?.uid && user?.uid !== uid) {
        getUserByDB()
-      //  console.log('userByDb', userByDb)
-
-
-      setUid(user.uid)
       getAllProfessionalsUsers().then((users) => {
         const usersFiltredDifferentByMe = users.filter((professional) => professional.uid !== user.uid)
         setUsers(usersFiltredDifferentByMe)
@@ -109,6 +91,8 @@ function StackRoutes() {
             </>
           )
         }
+        <Stack.Screen name="DetailsScreen" component={ProfessionalDetails} />
+
       </Stack.Navigator >
     </>
   );

@@ -11,13 +11,12 @@ import { useScreen } from "../stores/screen";
 import { colors } from "../Styles/theme";
 
 interface MyTabBarProps {
-  state: any;
-  descriptors: any;
+  initialScreen: number;
   navigation: any;
 }
 
-export function MyTabBar({ navigation, state, descriptors }: MyTabBarProps) {
-  const { screen, setScreen } = useScreen((state) => state);
+export function MyTabBar({ navigation, initialScreen = 0 }: MyTabBarProps) {
+  const { screen = initialScreen, setScreen } = useScreen((state) => state);
 
   const selectScreen = (page: number) => {
     setScreen(page)

@@ -3,6 +3,8 @@ export interface UseUserProps {
     users: UserModel[];
     setUser: (data: any) => void;
     setUsers: (data: any) => void;
+    uid: string;
+    setUid: (data: any) => void;
 }
 
 export interface ProviderData {
@@ -21,18 +23,10 @@ export interface StsTokenManager {
 }
 
 export interface UserModel {
-    // apiKey: string;
-    // appName: string;
-    // createdAt: string;
     email: string;
     displayName: string;
     photoURL: string;
     phoneNumber: string;
-    // emailVerified: boolean;
-    // isAnonymous: boolean;
-    // lastLoginAt: string;
-    // providerData: ProviderData[];
-    // stsTokenManager: StsTokenManager;
     uid: string;
     services: string[];
     country: string;

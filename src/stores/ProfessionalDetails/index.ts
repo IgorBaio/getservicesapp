@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { UseUserProps } from "./types";
+import { UseProfessionalProps } from "./types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const useUser = create<UseUserProps>()(
+export const useProfessional = create<UseProfessionalProps>()(
     persist((set, get) => ({
-        user: {
+        professional: {
             email: '',
             uid: '',
             displayName: '',
@@ -18,21 +18,13 @@ export const useUser = create<UseUserProps>()(
             id: '',
           
         },
-        users: [],
-        setUser: (data) => {
-            set({ user: data })
-        },
-        setUsers: (data) => {
-            set({ users: data })
-        },
-        setUid: (data) => {
-            set({ uid: data })
-        },
-        uid: ''
+        setProfessional: (data) => {
+            set({ professional: data })
+        }
     }),
         {
             name: 'user-storage',
             storage: createJSONStorage(() => AsyncStorage),
-            partialize: ({ user }: UseUserProps) => ({ user }),
+            partialize: ({ professional }: UseProfessionalProps) => ({ professional }),
         })
 )

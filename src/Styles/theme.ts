@@ -15,6 +15,7 @@ export const colors = {
     whitePrimary: '#FFF',
     bluePrimary: '#012169',
     greenPrimary: '#009739',
+    greenWhatsapp: '#34af23',
     yellowPrimary: '#fedd00',
     transparent: 'transparent',
     grayPrimary: '#F2F2F2',
