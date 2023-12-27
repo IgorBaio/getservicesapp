@@ -49,6 +49,10 @@ export function SearchStructure({ navigation }: any) {
     getFilter()
   }, [search, nationality])
 
+  useEffect(() => {
+    setNationality(user.country)
+  }, [user])
+
   return (
     <SearchContainer>
       <InputContainer>

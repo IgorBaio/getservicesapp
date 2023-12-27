@@ -5,7 +5,6 @@ import { InputLoginProps } from './types';
 
 export const TitleContainer = styled.View`
     width: 100%;
-    height: 20%;
     justify-content: flex-start;
     align-items: center;
     margin-top: ${heightPercentageToDP('10%')}px;
@@ -19,7 +18,6 @@ export const TitlePage = styled.Text`
 
 export const InputContainer = styled.View`
     width: 100%;
-    height: 20%;
     justify-content: center;
     align-items: center;
 `;
@@ -64,10 +62,8 @@ export const LoginText = styled.Text`
 
 export const RegisterLinkContainer = styled.View`
     width: 100%;
-    height: 2%;
     justify-content: center;
     align-items: center;
-    margin-top: ${heightPercentageToDP('2%')}px;
 `;
 
 export const RegisterLink = styled.TouchableOpacity`
@@ -88,4 +84,11 @@ export const RegisterText = styled.Text`
     align-items: center;
     font-style: italic;
 `;
+
+export const LoginButtonContainer = styled.View`
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+`;
+
 

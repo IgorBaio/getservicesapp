@@ -3,10 +3,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 import {
   ButtonSave,
   ButtonSaveContainer,
+  CancelButton,
   CellphoneTitle,
   CheckBoxContainer,
   ContentContainer,
-  CountriesList,
+  CountriesListContainer,
   CountryButtonSelect,
   CountryContainer,
   CountryItem,
@@ -38,7 +39,6 @@ import {
   ServicesMultiValueInput,
 } from "./styles";
 import { PageContainer } from "../../Molecules/PageContainer";
-import { Platform } from "react-native";
 import { useUser } from "../../stores/User";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { colors } from "../../Styles/theme";
@@ -49,6 +49,8 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import { setPhotoURL } from "../../functions/setPhoto";
 import { UserModel } from "../../stores/User/types";
+import { getCountries } from "../../services/getCountries";
+import * as ImageManipulator from 'expo-image-manipulator';
 
 const COUNTRIES = ['Brasil', 'Argentina', 'Chile', 'Colombia', 'Uruguai', 'Paraguai']
 
@@ -71,7 +73,6 @@ function ProfileStructure({ navigation }: any) {
   const [modalNameVisibility, setModalNameVisibility] = React.useState(false);
 
   const { user, setUser } = useUser(state => state)
-  console.log('user ProfileStructure', user)
 
   const [state, setState] = useState({
     displayName: user.displayName || " - ",
@@ -83,22 +84,26 @@ function ProfileStructure({ navigation }: any) {
     photoURL: user.photoURL || "",
     email: user.email || "",
     uid: user.uid || "",
+    id: user.id || "",
   });
-  console.log('state', state)
 
   const [isEditing, setIsEditing] = useState(false);
   const [searchingCountry, setSearchingCountry] = useState(false);
   const [servicesAutoFocus, setServicesAutoFocus] = useState(false);
-  const [servicesList, setServicesList] = useState<string[]>(user.services || []);
+  const [servicesList, setServicesList] = useState<string[]>(user.services || state.services || []);
   const [serviceInput, setServiceInput] = useState<string>('');
+  const [countryInput, setCountryInput] = useState<string>(state.country);
+  const [countruiesList, setCountriesList] = useState<any[]>([]);
 
   const setServices =
     () => {
-      const newServices: string[] = [...servicesList, serviceInput]
-      setServicesList(newServices);
-      setServiceInput('')
-      setServicesAutoFocus(true)
-      setState({ ...state, services: newServices })
+      if (!!serviceInput) {
+        const newServices: string[] = [...servicesList, serviceInput]
+        setServicesList(newServices);
+        setServiceInput('')
+        setServicesAutoFocus(true)
+        setState({ ...state, services: newServices })
+      }
     }
 
   const onRemoveService = (service: string) => {
@@ -109,25 +114,28 @@ function ProfileStructure({ navigation }: any) {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      base64: true
+      aspect: [2, 1],
+      quality: 0.7,
+      base64: true,
+
+
     });
 
     if (!result.canceled) {
-      let image = ""
-      // if(result.assets[0].base64) image = "data:image/jpeg;base64,"+ result.assets[0].base64
-      // const newState = { ...state, photoURL: image }
-      const newState = { ...state, photoURL: result.assets[0].uri }
-      console.log('newState', newState)
+      let image = result.assets[0]
+
+      const resizedImage = await ImageManipulator.manipulateAsync(
+        image.uri,
+        [{ resize: { width: 200 } }],
+        { compress: 1, format: ImageManipulator.SaveFormat.JPEG, base64: true }
+      );
+
+
+      const newState = { ...state, photoURL: "data:image/jpeg;base64," + resizedImage.base64 }
       setState(newState);
-      // setTimeout(() => {
-      //   saveUser()
-      // }
-      // , 1000);
-      // await AsyncStorage.setItem("uriProfile", result.uri);
+
     }
   };
 
@@ -136,6 +144,7 @@ function ProfileStructure({ navigation }: any) {
 
       const docRef = await updateDoc(doc(db, "users", user.id), state);
       console.log("Document updated with ID: ", docRef);
+      setUser(state)
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -144,8 +153,27 @@ function ProfileStructure({ navigation }: any) {
     }
   }
 
+  const getCountrySearched = (country: string) => {
+    if (!!country.length && country !== ' - ') {
+      getCountries(country).then((countries) => {
+
+        console.log('countries', countries)
+        setCountriesList(countries)
+      });
+    }
+
+  }
+
   useEffect(() => {
-    if (state.photoURL) saveUser()
+    console.log('state.photoURL UPDATE', state.photoURL)
+    if (!!state.photoURL && user.photoURL !== state.photoURL) {
+      // console.log('state.photoURL', state.photoURL)
+      // console.log('user.photoURL', user.photoURL)
+      console.log('user.photoURL !== state.photoURL', !!state.photoURL && user.photoURL !== state.photoURL)
+      console.log('',)
+
+      saveUser()
+    }
   }
     , [state.photoURL])
 
@@ -160,8 +188,18 @@ function ProfileStructure({ navigation }: any) {
       photoURL: user.photoURL || "",
       email: user.email || "",
       uid: user.uid || "",
+      id: user.id || "",
     })
+    setCountryInput(user.country || " - ")
+    setServicesList(user.services || [])
   }, [user])
+
+
+  useEffect(() => {
+    getCountrySearched(countryInput)
+  }, [countryInput])
+  
+
   return (
     <PageContainer>
       <>
@@ -176,7 +214,7 @@ function ProfileStructure({ navigation }: any) {
           {!isEditing ?
             <DataContainer>
               <LabelContainer>
-                <LabelText>Name:</LabelText>
+                <LabelText>Nome:</LabelText>
               </LabelContainer>
               <NameEditContainer>
 
@@ -186,11 +224,11 @@ function ProfileStructure({ navigation }: any) {
                 </EditProfileDataButton>
               </NameEditContainer>
               <LabelContainer>
-                <LabelText>Phone:</LabelText>
+                <LabelText>Telefone:</LabelText>
               </LabelContainer>
               <CellphoneTitle>{state.phoneNumber}</CellphoneTitle>
               <LabelContainer>
-                <LabelText>Country:</LabelText>
+                <LabelText>País:</LabelText>
               </LabelContainer>
               <CountryTitle>{state.country}</CountryTitle>
               <LabelContainer>
@@ -214,57 +252,58 @@ function ProfileStructure({ navigation }: any) {
                   setUser({})
                   AsyncStorage.multiRemove(['@user', '@uid'])
                 }}>
-                  <ExitText>Exit</ExitText>
+                  <ExitText>Sair</ExitText>
                   <MaterialIcons name="logout" size={24} color={colors.whitePrimary} />
                 </ExitButton>
               </ExitButtonContainer>
             </DataContainer>
-            : (
+            :
+            (
               <DataContainer>
                 <InputName
-                  placeholder="Name"
+                  placeholder="Nome"
                   onChangeText={(text: string) => setState({ ...state, displayName: text })}
                   value={state.displayName === ' - ' ? '' : state.displayName}
                 />
 
                 <InputCellphone
-                  placeholder="Cellphone"
+                  placeholder="Telefone"
                   keyboardType={'numeric'}
                   onChangeText={(text: string) => setState({ ...state, phoneNumber: text })}
                   value={state.phoneNumber === ' - ' ? '' : state.phoneNumber}
                 />
 
-                <CountryContainer>
+                <CountryContainer  >
 
                   <InputCountry
-                    placeholder="Country"
-                    onChangeText={(text: string) => setState({ ...state, country: text })}
-                    value={state.country === ' - ' ? '' : state.country}
+                    placeholder="País"
+                    onChangeText={(text: string) => {
+                      setCountryInput(text)
+                    }}
+                    value={countryInput === ' - ' ? '' : countryInput}
                     onFocus={() => setSearchingCountry(true)}
-                    onBlur={() => Platform.OS === 'ios' ? setSearchingCountry(false) : {}}
+                  // onBlur={() => Platform.OS === 'ios' ? setSearchingCountry(false) : {}}
                   />
 
-                  {searchingCountry ? <CountriesList
-                    height={COUNTRIES.filter(country => country?.toLowerCase().includes(state.country?.toLowerCase())).length}
-                    data={[]}
-                    keyExtractor={(item: string) => item}
-                    ListHeaderComponent={() => {
-                      return ['Brasil', 'Argentina', 'Chile', 'Colombia', 'Uruguai', 'Paraguai'].filter(country => country.toLowerCase().includes(state.country.toLowerCase())).map((country, index) => {
+                  {searchingCountry ?
+                    <CountriesListContainer
+                      key={countruiesList.length}
+                    >
+                      {countruiesList?.map((country, index) => {
+                        console.log('country item', country)
                         return <CountryButtonSelect onPress={() => {
-                          setState({ ...state, country });
+                          setState({ ...state, country: country });
+
+                          setCountryInput(country)
                           console.log('country', country)
                           setSearchingCountry(false)
                         }} >
-
-                          <CountryItem key={index}>{country}</CountryItem>
+                          {/* <Text style={{color: colors.whitePrimary}}>{country}</Text> */}
+                          <CountryItem >{country}</CountryItem>
                         </CountryButtonSelect>
-                      }
-                      )
-                    }}
-                    ListHeaderComponentStyle={{ marginVertical: 20 }}
-
-                    renderItem={() => <></>}
-                  /> :
+                      })}
+                    </CountriesListContainer>
+                    :
                     (
                       <>
                         <ServicesMultiValueInput
@@ -303,11 +342,16 @@ function ProfileStructure({ navigation }: any) {
                         </CheckBoxContainer>
 
                         <ButtonSaveContainer>
+                          <CancelButton onPress={() => setIsEditing(false)}>
+                              <SaveText>Cancelar</SaveText>
+                              <MaterialIcons name="cancel" size={24} color={colors.whitePrimary} />
+                          </CancelButton>
                           <ButtonSave onPress={saveUser}>
-                            <SaveText>Save</SaveText>
+                            <SaveText>Salvar</SaveText>
                             <MaterialIcons name="save" size={24} color={colors.whitePrimary} />
                           </ButtonSave>
                         </ButtonSaveContainer>
+
 
                       </>
                     )}

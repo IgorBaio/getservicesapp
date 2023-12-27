@@ -94,19 +94,16 @@ export const CountryTitle = styled.Text`
 `
 
 export const ServicesBadgesContainer = styled.View`
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
-    margin-top: ${heightPercentageToDP('2%')}px;
-    background-color: red;
+    flex-direction: row;
+    justify-content: space-evenly;
 `
 
 export const ServiceBadge = styled.Text`
     font-size: ${scaledSize(12)}px;
     font-weight: bold;
     color: ${colors.whitePrimary};
-    background-color: ${colors.violetPrimary};
+    background-color: ${colors.bluePrimary};
     padding: ${heightPercentageToDP('1%')}px ${widthPercentageToDP('2%')}px;
     width: 20%;
     text-align: center;
@@ -170,7 +167,22 @@ export const CountryContainer = styled.View`
 
 export const CountriesList = styled.FlatList<CountriesListProps>`
     width: 80%;
-    height: ${({ height }: CountriesListProps) => heightPercentageToDP(!!height ? `${height * 10}%` : '30%')}px;
+    height: ${heightPercentageToDP('30%')}px;
+    border-radius: 10px;
+    background-color: ${colors.graySecondary};
+    padding: ${heightPercentageToDP('2%')}px ${widthPercentageToDP('2%')}px;
+    padding-top: 0px;
+    position: absolute;
+    top: 70px;
+    bottom: 120px;
+    margin-bottom: 70px;
+    z-index: 999;
+`;
+
+export const CountriesListContainer = styled.ScrollView`
+    width: 80%;
+    height: ${heightPercentageToDP('32%')}px;
+    max-height: ${heightPercentageToDP('32%')}px;
     border-radius: 10px;
     background-color: ${colors.graySecondary};
     padding: ${heightPercentageToDP('2%')}px ${widthPercentageToDP('2%')}px;
@@ -184,16 +196,17 @@ export const CountriesList = styled.FlatList<CountriesListProps>`
 
 export const CountryButtonSelect = styled.TouchableOpacity`
     width: 100%;
-    height: 50px;
+    height: ${heightPercentageToDP('5%')}px;
     border-radius: 10px;
-    background-color: ${colors.violetPrimary};
+    background-color: ${colors.bluePrimary};
     padding: 10px;
+    margin: 5px 0;
 `;
 
 export const CountryItem = styled.Text`
     font-size: ${scaledSize(16)}px;
     font-weight: bold;
-    color: ${colors.blackPrimary};
+    color: ${colors.whitePrimary};
 `
 
 export const ServicesMultiValueInput = styled.TextInput`
@@ -209,10 +222,10 @@ export const ServiceBadgeInput = styled.TouchableOpacity`
    font-size: ${scaledSize(12)}px;
     font-weight: bold;
     color: ${colors.whitePrimary};
-    background-color: ${colors.violetPrimary};
+    background-color: ${colors.bluePrimary};
     padding: ${heightPercentageToDP('1%')}px ${widthPercentageToDP('2%')}px;
     text-align: center;
-    height: 80%;
+    /* height: 80%; */
     margin: ${heightPercentageToDP('1%')}px;
     flex-direction: row;
     justify-content: flex-start;
@@ -270,9 +283,22 @@ export const ButtonSave = styled.TouchableOpacity`
     width: 40%;
     height: 50px;
     border-radius: 10px;
-    background-color: ${colors.violetPrimary};
+    background-color: ${colors.bluePrimary};
     padding: 10px;
     margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+`;
+
+export const CancelButton = styled.TouchableOpacity`
+    width: 40%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: ${colors.greenPrimary};
+    padding: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
     justify-content: center;
     align-items: center;
     flex-direction: row;

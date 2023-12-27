@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageContainer } from "../../Molecules/PageContainer";
-import { ButtonRegister, ButtonRegisterContainer, InputContainer, InputRegister, LoginLink, LoginLinkContainer, LoginText, RegisterText, TitleContainer, TitlePage } from "./styles";
+import { InputContainer, LoginLink, LoginLinkContainer, LoginText, RegisterButtonContainer, RegisterText, TitleContainer, TitlePage } from "./styles";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getUserStorage } from "../../functions/getUser";
 import { colors } from "../../Styles/theme";
 import { db, firebaseConfig } from "../../../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,12 +12,13 @@ import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { UserModel } from "../../stores/User/types";
 import { GenericInput } from "../../Molecules/GenericInput";
 import { GenericButton } from "../../Molecules/GenericButton";
+import { AlertModal } from "../../Molecules/alert-modal";
 
 export const RegisterStructure = ({ navigation }: any) => {
     const [user, setUserState] = useState();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [messageError, setMessageError] = useState<string>();
+    const [messageError, setMessageError] = useState<string>('');
 
     const { setUser } = useUser(state => state)
 
@@ -95,6 +95,8 @@ export const RegisterStructure = ({ navigation }: any) => {
 
                     <GenericInput
                         placeholder="Email"
+                        marginTop={'20%'}
+                        keyboardType="email-address"
                         value={email}
                         onChangeText={(text: string) => setEmail(text)}
 
@@ -102,7 +104,7 @@ export const RegisterStructure = ({ navigation }: any) => {
                     <GenericInput
                         placeholder="Password"
                         secureTextEntry={true}
-                        marginTop={'8%'}
+                        marginTop={'5%'}
                         value={password}
                         onChangeText={(text: string) => setPassword(text)}
 
@@ -110,16 +112,25 @@ export const RegisterStructure = ({ navigation }: any) => {
                 </InputContainer>
                 <LoginLinkContainer>
                     <LoginLink onPress={() => navigation.navigate('LoginScreen')}>
-                        <LoginText>Sign in</LoginText>
+                        <LoginText>Ir para Login</LoginText>
                     </LoginLink>
                 </LoginLinkContainer>
-                <GenericButton onPress={onAuthStateChanged}>
-                    <>
-                        <RegisterText>Registrar </RegisterText>
-                        <MaterialIcons name="login" size={24} color={colors.whitePrimary} />
-                    </>
-                </GenericButton>
-
+                <RegisterButtonContainer>
+                    <GenericButton onPress={onAuthStateChanged}>
+                        <>
+                            <RegisterText>Registrar </RegisterText>
+                            <MaterialIcons name="login" size={24} color={colors.whitePrimary} />
+                        </>
+                    </GenericButton>
+                </RegisterButtonContainer>
+                <AlertModal
+                    visible={!!messageError}
+                    title={messageError}
+                    onCancel={() => setMessageError("")}
+                    confirmText="Ok"
+                    onConfirm={() => setMessageError("")}
+                    onSwipeCancel={() => setMessageError("")}
+                />
             </>
         </PageContainer>
     )
