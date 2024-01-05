@@ -8,27 +8,16 @@
  * @format
  */
 
-import React, { useRef, type PropsWithChildren, useEffect } from "react";
+import React, { useRef } from "react";
 import {
   AppState,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
-  View,
 } from "react-native";
 
 import {
   Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
 } from "react-native/Libraries/NewAppScreen";
-import Toast, { BaseToastProps } from "react-native-toast-message";
-import SplasScreen from "react-native-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import store from "./src/app/store";
@@ -36,38 +25,7 @@ import AppRoutes from "./src/routes";
 import { ThemeProvider } from "@react-navigation/native";
 import theme from "./src/Styles/theme";
 import { NativeBaseProvider } from "native-base";
-
-const Section: React.FC<
-  PropsWithChildren<{
-    title: string;
-  }>
-> = ({ children, title }) => {
-  const isDarkMode = useColorScheme() === "dark";
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}
-      >
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}
-      >
-        {children}
-      </Text>
-    </View>
-  );
-};
+import mobileAds, { MaxAdContentRating } from 'react-native-google-mobile-ads';
 
 const App = () => {
   const isDarkMode = useColorScheme() === "dark";
@@ -81,6 +39,26 @@ const App = () => {
   // }//TODO fazer toast depois
 
   const appState = useRef(AppState.currentState);
+
+
+  mobileAds()
+    .setRequestConfiguration({
+      // Update all future requests suitable for parental guidance
+      maxAdContentRating: MaxAdContentRating.PG,
+
+      // Indicates that you want your content treated as child-directed for purposes of COPPA.
+      tagForChildDirectedTreatment: true,
+
+      // Indicates that you want the ad request to be handled in a
+      // manner suitable for users under the age of consent.
+      tagForUnderAgeOfConsent: true,
+
+      // An array of test device IDs to allow.
+      testDeviceIdentifiers: ['EMULATOR'],
+    })
+    .then(() => {
+      // Request config successfully set!
+    });
 
   // useEffect(() => {
   //   SplasScreen.hide();
