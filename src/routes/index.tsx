@@ -11,6 +11,7 @@ import { RegisterStackScreen } from './stacks/RegisterStackScreen';
 import { useUser } from '../stores/User';
 import { getAllProfessionalsUsers, getUserByDB } from '../services/firebase';
 import ProfessionalDetails from '../pages/ProfessionalDetails';
+import { useLoading } from '../stores/Loading';
 
 export type RootStackParamList = {
   HomeScreen: undefined;
@@ -101,7 +102,7 @@ function StackRoutes() {
 function AppRoutes() {
   const dispatch = useDispatch();
   const navigationRef = useNavigationContainerRef();
-  const [loading, setLoading] = useState(true);
+  const { isLoading, setIsLoading } = useLoading(state => state);
 
   navigationRef.addListener('state', () => {
     const { setRouteName } = useCurrentRoute.getState();
@@ -110,6 +111,10 @@ function AppRoutes() {
 
     //TODO fazer a parte de color
   });
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, []);
 
   const appState = useRef(AppState.currentState);
 

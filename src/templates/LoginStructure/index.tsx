@@ -12,17 +12,21 @@ import { useUser } from "../../stores/User";
 import { GenericButton } from "../../Molecules/GenericButton";
 import { GenericInput } from "../../Molecules/GenericInput";
 import { AlertModal } from "../../Molecules/alert-modal";
+import { useLoading } from "../../stores/Loading";
+import { LoadingComponent } from "../../Organisms/LoadingComponent";
 
 export const LoginStructure = ({ navigation }: any) => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [messageError, setMessageError] = useState<string>('');
 
+    const { isLoading, setIsLoading } = useLoading(state => state);
     const { setUser } = useUser(state => state)
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const onAuthStateChanged = async () => {
+        setIsLoading(true)
         if (email !== "" && password !== "") {
             setMessageError("");
             const userAccount = await signInWithEmailAndPassword(auth, email, password)
@@ -49,6 +53,8 @@ export const LoginStructure = ({ navigation }: any) => {
         } else {
             setMessageError("Preencha os campos");
         }
+        setIsLoading(false)
+
     };
 
 
@@ -79,19 +85,24 @@ export const LoginStructure = ({ navigation }: any) => {
                     />
 
                 </InputContainer>
+
                 <RegisterLinkContainer>
                     <RegisterLink onPress={() => navigation.navigate('RegisterScreen')}>
                         <RegisterText>Registrar conta</RegisterText>
                     </RegisterLink>
                 </RegisterLinkContainer>
-                <LoginButtonContainer>
-                    <GenericButton onPress={onAuthStateChanged}>
-                        <>
-                            <LoginText>Entrar </LoginText>
-                            <MaterialIcons name="login" size={24} color={colors.whitePrimary} />
-                        </>
-                    </GenericButton>
-                </LoginButtonContainer>
+                {isLoading ?
+                    <LoadingComponent />
+                    :
+                    <LoginButtonContainer>
+                        <GenericButton onPress={onAuthStateChanged}>
+                            <>
+                                <LoginText>Entrar </LoginText>
+                                <MaterialIcons name="login" size={24} color={colors.whitePrimary} />
+                            </>
+                        </GenericButton>
+                    </LoginButtonContainer>
+                }
 
                 <AlertModal
                     visible={!!messageError}

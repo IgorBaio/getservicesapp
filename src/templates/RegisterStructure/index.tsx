@@ -13,6 +13,8 @@ import { UserModel } from "../../stores/User/types";
 import { GenericInput } from "../../Molecules/GenericInput";
 import { GenericButton } from "../../Molecules/GenericButton";
 import { AlertModal } from "../../Molecules/alert-modal";
+import { useLoading } from "../../stores/Loading";
+import { LoadingComponent } from "../../Organisms/LoadingComponent";
 
 export const RegisterStructure = ({ navigation }: any) => {
     const [user, setUserState] = useState();
@@ -20,13 +22,14 @@ export const RegisterStructure = ({ navigation }: any) => {
     const [password, setPassword] = useState<string>('');
     const [messageError, setMessageError] = useState<string>('');
 
+    const { isLoading, setIsLoading } = useLoading(state => state);
     const { setUser } = useUser(state => state)
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
     const onAuthStateChanged = async () => {
-
+        setIsLoading(true)
         if (email !== "" && password !== "") {
             setMessageError("");
             createUserWithEmailAndPassword(auth, email, password)
@@ -78,6 +81,7 @@ export const RegisterStructure = ({ navigation }: any) => {
         } else {
             setMessageError("Preencha os campos");
         }
+        setIsLoading(false)
     };
 
     useEffect(() => {
@@ -115,14 +119,17 @@ export const RegisterStructure = ({ navigation }: any) => {
                         <LoginText>Ir para Login</LoginText>
                     </LoginLink>
                 </LoginLinkContainer>
-                <RegisterButtonContainer>
-                    <GenericButton onPress={onAuthStateChanged}>
-                        <>
-                            <RegisterText>Registrar </RegisterText>
-                            <MaterialIcons name="login" size={24} color={colors.whitePrimary} />
-                        </>
-                    </GenericButton>
-                </RegisterButtonContainer>
+                {isLoading ?
+                    <LoadingComponent />
+                    :
+                    <RegisterButtonContainer>
+                        <GenericButton onPress={onAuthStateChanged}>
+                            <>
+                                <RegisterText>Registrar </RegisterText>
+                                <MaterialIcons name="login" size={24} color={colors.whitePrimary} />
+                            </>
+                        </GenericButton>
+                    </RegisterButtonContainer>}
                 <AlertModal
                     visible={!!messageError}
                     title={messageError}

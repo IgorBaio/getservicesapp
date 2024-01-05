@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Text,
 
@@ -9,17 +9,65 @@ import {
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useScreen } from "../stores/screen";
 import { colors } from "../Styles/theme";
+import { useCounterClickAd } from "../stores/CounterClickAd";
+import { AdEventType, InterstitialAd, TestIds } from "react-native-google-mobile-ads";
+import { Platform } from "react-native";
 
 interface MyTabBarProps {
   initialScreen: number;
   navigation: any;
 }
 
+const verifyPlatform = () => {
+  if (Platform.OS === 'ios') {
+    return 'ca-app-pub-9674908168811233~6322324593'
+  } else if (Platform.OS === 'android') {
+    return 'ca-app-pub-9674908168811233~5829755601'
+  }
+}
+
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : verifyPlatform();
+const interstitial = InterstitialAd.createForAdRequest(adUnitId);
+
 export function MyTabBar({ navigation, initialScreen = 0 }: MyTabBarProps) {
   const { screen = initialScreen, setScreen } = useScreen((state) => state);
 
-  const selectScreen = (page: number) => {
+  const { setClicks, clicks } = useCounterClickAd(state => state)
+
+  useEffect(() => {
+    
+    const eventListener = interstitial.addAdEventListener((AdEventType.LOADED || AdEventType.CLOSED), type => {
+      if (type === AdEventType.LOADED) {
+        console.log("ad loaded");
+        interstitial.show();
+      }
+      if (type === AdEventType.CLOSED) {
+        console.log("ad closed");
+
+        //reload ad 
+        interstitial.load();
+      }
+    });
+
+    // Start loading the interstitial straight away
+    interstitial.load();
+
+    // Unsubscribe from events on unmount
+    return () => {
+      eventListener();
+    };
+  }, [clicks]);
+
+  const selectScreen = (page: number, screen: string) => {
     setScreen(page)
+    if (clicks >= 2) {
+      interstitial.show();
+      setClicks(0)
+    } else {
+
+      setClicks(clicks + 1)
+    }
+    navigation.navigate(screen)
   }
 
   return (
@@ -30,8 +78,7 @@ export function MyTabBar({ navigation, initialScreen = 0 }: MyTabBarProps) {
           py="3"
           flex={1}
           onPress={() => {
-            selectScreen(0);
-            navigation.navigate('HomeScreen')
+            selectScreen(0, 'HomeScreen');
           }}
         >
           <Center>
@@ -46,8 +93,7 @@ export function MyTabBar({ navigation, initialScreen = 0 }: MyTabBarProps) {
           py="2"
           flex={1}
           onPress={() => {
-            selectScreen(1);
-            navigation.navigate('Search')
+            selectScreen(1, 'Search');
           }}
         >
           <Center>
@@ -62,8 +108,7 @@ export function MyTabBar({ navigation, initialScreen = 0 }: MyTabBarProps) {
           py="2"
           flex={1}
           onPress={() => {
-            selectScreen(2);
-            navigation.navigate('Profile')
+            selectScreen(2, 'Profile');
           }}
         >
           <Center>

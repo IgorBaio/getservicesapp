@@ -10,39 +10,23 @@ export const SearchContainer = styled.View`
 
 `
 
-export const ScrollSearch = styled.ScrollView<ScrollSearchProps>`
-    margin-bottom: 3px;
-    `
-
 export const FeedContainer = styled.View`
 `
 export const GalleryContainer = styled.View`
-justify-content: center;
-align-items: center;
+    justify-content: center;
+    align-items: center;
 `
 
 export const InputContainer = styled.View`
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
-    margin-top: ${heightPercentageToDP('10%')}px;
+    margin-top: ${heightPercentageToDP('7%')}px;
     margin-left: ${widthPercentageToDP('5%')}px;
     margin-right: ${widthPercentageToDP('5%')}px;
 
     
 `
-
-export const InputSearch = styled.TextInput`
-    width: 100%;
-    height: ${heightPercentageToDP('6%')}px;
-    background-color: ${colors.whitePrimary};
-    border-radius: 10px;
-    padding: 0 10px;
-    font-size: ${scaledSize(14)}px;
-    color: #000;
-    border: 1px solid ${colors.grayPrimary};
-`
-
 export const InputCheckBoxContainer = styled.TouchableOpacity`
     width: 100%;
     height: ${heightPercentageToDP('7%')}px;
@@ -52,7 +36,7 @@ export const InputCheckBoxContainer = styled.TouchableOpacity`
     border-radius: 10px;
     flex-direction: row;
     position: relative;
-    margin: ${heightPercentageToDP('1%')}px 0;
+    margin-top: ${heightPercentageToDP('-1%')}px;
     padding: 0 10px;
 `
 
@@ -72,4 +56,12 @@ export const InputCheckBoxLabel = styled.Text`
     font-size: ${scaledSize(14)}px;
     color: #000;
     font-weight: 400;
-`  
+`
+
+export const BaanerContainer = styled.View`
+    width: 100%;
+    background-color: transparent;
+    border-radius: 10px;
+    margin: ${heightPercentageToDP('0.5%')}px 0;
+    padding: 0 10px;
+`

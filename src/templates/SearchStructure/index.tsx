@@ -1,23 +1,13 @@
 import React, { useEffect } from "react";
 import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import {
   FeedContainer,
   GalleryContainer,
   SearchContainer,
-  ScrollSearch,
   InputContainer,
-  InputSearch,
   InputCheckBox,
   InputCheckBoxContainer,
   InputCheckBoxLabel,
+  BaanerContainer,
 } from "./styles";
 import { Gallery } from "../../Organisms/Gallery";
 import { useFilters } from "../../stores/Filters";
@@ -25,7 +15,8 @@ import { colors } from "../../Styles/theme";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useUser } from "../../stores/User";
 import { GenericInput } from "../../Molecules/GenericInput";
-
+import mobileAds, { AppOpenAd, InterstitialAd, RewardedAd, BannerAd, TestIds } from "react-native-google-mobile-ads";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 export function SearchStructure({ navigation }: any) {
   const { users } = useUser((state) => state);
@@ -57,6 +48,9 @@ export function SearchStructure({ navigation }: any) {
     <SearchContainer>
       <InputContainer>
         <GenericInput placeholder="Buscar" onChangeText={(e: string) => setSearch(e)} value={search} />
+        <BaanerContainer>
+          <BannerAd unitId={TestIds.BANNER} size="BANNER" />
+        </BaanerContainer>
         <InputCheckBoxContainer onPress={() => {
           if (!!nationality) setNationality("")
           else setNationality(user.country)
@@ -70,7 +64,7 @@ export function SearchStructure({ navigation }: any) {
       </InputContainer>
       <FeedContainer>
         <GalleryContainer >
-          <Gallery items={searchResult} navigation={navigation} />
+          <Gallery items={searchResult} navigation={navigation} maxHeight={heightPercentageToDP('65%')} />
         </GalleryContainer>
       </FeedContainer>
     </SearchContainer>

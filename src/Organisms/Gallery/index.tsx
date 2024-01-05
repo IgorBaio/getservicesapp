@@ -8,13 +8,13 @@ import {
 import { colors } from "../../Styles/theme";
 import React from "react";
 
-export const Gallery = ({ items, navigation }: any) => {
+export const Gallery = ({ items, navigation, maxHeight }: any) => {
   console.log("items.length", items.length);
   return (
     <FlatGrid
       itemDimension={125}
       data={items}
-      style={styles.gridView}
+      style={[styles.gridView, maxHeight && { height: maxHeight }]}
       staticDimension={400}
       spacing={10}
       renderItem={({ item }) => (
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   gridView: {
     marginTop: 10,
     height: heightPercentageToDP("100%"),
-    marginBottom: heightPercentageToDP("42%"),
+    marginBottom: heightPercentageToDP("45%"),
     padding: 0,
   },
   itemContainer: {
