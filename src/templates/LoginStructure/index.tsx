@@ -31,13 +31,14 @@ export const LoginStructure = ({ navigation }: any) => {
             setMessageError("");
             const userAccount = await signInWithEmailAndPassword(auth, email, password)
                 .catch((error) => {
-                    if (error.code === "auth/user-not-found") {
-                        Alert.alert("Atenção", "Usuário não encontrado");
+                    if (error.code === "auth/user-not-found" || error.code === "auth/invalid-login-credentials") {
+                        setMessageError("Atenção!\nUsuário não encontrado");
                     }
 
                     if (error.code === "auth/invalid-email") {
-                        Alert.alert("Atenção", "Este endereço de email é inválido!");
+                        setMessageError("Atenção\nEste endereço de email é inválido!");
                     }
+                    setIsLoading(false)
                 });
             if (userAccount === undefined || userAccount === null) return;
 
@@ -47,7 +48,6 @@ export const LoginStructure = ({ navigation }: any) => {
             }
 
             AsyncStorage.setItem('@user', JSON.stringify(user))
-            console.log('user.auth.displayName', user?.displayName)
             setUser(user)
 
         } else {

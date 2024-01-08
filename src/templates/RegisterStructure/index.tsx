@@ -37,8 +37,6 @@ export const RegisterStructure = ({ navigation }: any) => {
                     // Signed in 
 
                     const user = userCredential.user;
-                    console.log('userCredential', userCredential)
-                    console.log('user', user)
                     const userModel: UserModel = {
                         email: user.email || "",
                         displayName: "",
@@ -52,7 +50,6 @@ export const RegisterStructure = ({ navigation }: any) => {
                         id: "",
 
                     }
-                    console.log('userModel', userModel)
                     AsyncStorage.setItem('@user', JSON.stringify(userModel))
                     try {
                         const docRef = await addDoc(collection(db, "users"), userModel);
@@ -72,8 +69,10 @@ export const RegisterStructure = ({ navigation }: any) => {
                 })
                 .catch((error) => {
                     const errorCode = error.code;
-                    const errorMessage = error.message;
-                    // ..
+                    if (errorCode === "auth/invalid-email") {
+                        setMessageError("Atenção\nEste endereço de email é inválido!");
+                    }
+                    setIsLoading(false)
                 });
 
 

@@ -4,8 +4,6 @@ import { InputGeneric, InputGenericContainer } from "./styles";
 import { GenericInputProps } from "./types";
 
 export const GenericInput = ({ placeholder, placeholderTextColor, onChangeText, value, secureTextEntry, marginTop, keyboardType = 'default' }: GenericInputProps) => {
-    console.log('placeholderTextColor', placeholderTextColor)
-    console.log('placeholder', placeholder)
     const [isFocused, setIsFocused] = React.useState(false);
 
     return (
